@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">oboa_chat</string>
+    <string name="facebook_app_id">2136875417065704</string>
+    <string name="fb_login_protocol_scheme">fb2136875417065704</string>
+    <string name="facebook_client_token">4250adc866906301ab7fb1a5a035f000</string>
+</resources>
