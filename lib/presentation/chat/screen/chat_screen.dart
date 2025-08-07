@@ -252,10 +252,10 @@ class ChatScreen extends StatelessWidget {
         throw Exception("이미지 데이터를 얻을 수 없습니다.");
       }
       Uint8List pngBytes = byteData.buffer.asUint8List();
-      // ⭐ 캡처된 바이트 데이터를 ViewModel에 전달 (로직 간소화)
-      onAction(ChatAction.handleCapturedImage(pngBytes));
-      // onAction 호출 후 캡처 모드를 바로 종료
-      onAction(const ChatAction.exitShareCaptureMode());
+      // // ⭐ 캡처된 바이트 데이터를 ViewModel에 전달 (로직 간소화)
+      // onAction(ChatAction.handleCapturedImage(pngBytes));
+      // // onAction 호출 후 캡처 모드를 바로 종료
+      // onAction(const ChatAction.exitShareCaptureMode());
 
       final directory = await getTemporaryDirectory();
       final String tempFileName = "share_capture_${DateTime.now().millisecondsSinceEpoch}.png";
@@ -265,20 +265,20 @@ class ChatScreen extends StatelessWidget {
 
       // 캡처된 이미지 경로를 ViewModel에 전달하여 공유 액션 수행
       if (lastCapturedImagePath != null) {
-        // onAction(ChatAction.shareFile(lastCapturedImagePath!, text: '채팅 화면을 공유합니다!'));
+        onAction(ChatAction.shareFile(lastCapturedImagePath!, text: '채팅 화면을 공유합니다!'));
 
-        showModalBottomSheet(
-          context: context,
-          // isScrollControlled: true를 설정하면 바텀시트가 화면 전체를 덮을 수 있습니다.
-          // isDismissible: true는 기본값으로, 바텀시트 외부를 탭하면 닫힙니다.
-          // barrierColor: Colors.black.withOpacity(0.5)로 설정하여 배경색을 동일하게 유지할 수 있습니다.
-          builder: (BuildContext context) {
-            return ShareDialogContent(
-              state: state,
-              onAction: onAction,
-            );
-          },
-        );
+        // showModalBottomSheet(
+        //   context: context,
+        //   // isScrollControlled: true를 설정하면 바텀시트가 화면 전체를 덮을 수 있습니다.
+        //   // isDismissible: true는 기본값으로, 바텀시트 외부를 탭하면 닫힙니다.
+        //   // barrierColor: Colors.black.withOpacity(0.5)로 설정하여 배경색을 동일하게 유지할 수 있습니다.
+        //   builder: (BuildContext context) {
+        //     return ShareDialogContent(
+        //       state: state,
+        //       onAction: onAction,
+        //     );
+        //   },
+        // );
       } else {
         throw Exception("캡처된 이미지 경로를 얻지 못해 공유할 수 없습니다.");
       }
