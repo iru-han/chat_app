@@ -147,7 +147,7 @@ void diSetup({bool isTesting = false}) {
       chatRepository: getIt<ChatRepository>(),
           aiChatService: getIt<AIChatService>(),
           sendChatWithAttachmentsUseCase: getIt<SendChatWithAttachmentsUseCase>(),
-          uploadCapturedImageUseCase: getIt<UploadCapturedImageUseCase>(),
+          uploadCapturedImageUseCase: getIt<UploadCapturedImageUseCase>(), shareUrlService: getIt<ShareUrlService>(),
     ),
   );
 
