@@ -1,5 +1,3 @@
-// lib/domain/use_case/upload_file_use_case.dart
-
 import 'dart:typed_data';
 import 'package:mime/mime.dart';
 import 'package:oboa_chat_app/domain/service/ai_service.dart';
@@ -25,20 +23,16 @@ class UploadFileUseCase {
   Future<ChatMessage> execute(String roomId, String userId, String filePath, Uint8List fileBytes, String fileType, {String? fileName}) async {
     try {
       // 1. 파일 Storage 업로드
-      final publicUrl = await _fileRepository.uploadChatFile(
-          roomId, userId, filePath, fileBytes, fileType);
-      print("publicUrl : ${publicUrl}");
+      final publicUrl = await _fileRepository.uploadChatFile(roomId, userId, filePath, fileBytes, fileType);
 
       // 2. Claude Files API에 파일 업로드 (document 또는 pdf일 경우)
       String? claudeFileId;
-      print("fileType : ${fileType}");
       if (fileType == 'document' || fileType == 'pdf' || fileType == 'file') {
         try {
           final mimeType = lookupMimeType(filePath) ??
               'application/octet-stream';
           claudeFileId = await _aiChatService.uploadFileToClaude(
               fileBytes, mimeType, fileName ?? p.basename(filePath));
-          print('File uploaded to Claude: $claudeFileId');
         } catch (e) {
           print('Error uploading file to Claude: $e');
           // 오류가 발생해도 진행
@@ -68,7 +62,6 @@ class UploadFileUseCase {
       await _chatRepository.sendMessage(fileMessage); // <- 파일 메시지 DB 저장
       await _chatRepository.updateLastMessage(
           roomId, fileMessage.text, fileMessage.createdAt);
-      print("fileMessage : $fileMessage");
 
       return fileMessage; // <- 파일 메시지 객체를 반환
     } catch (e) {

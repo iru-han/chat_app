@@ -19,7 +19,7 @@ class UploadCapturedImageUseCase {
 
       final publicUrl = await _fileRepository?.uploadShareFile(
         'capture-images', // 적절한 버킷 이름 설정
-        'captured-images/$tempFileName', // 저장 경로 설정
+        tempFileName, // 저장 경로 설정
         pngBytes,
         'image/png',
       );
