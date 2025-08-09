@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "9B63HBB6G5.com.oboa.chat",
+        "paths": [ "/chat/*" ]
+      }
+    ]
+  }
+}
