@@ -4,24 +4,27 @@ import 'package:oboa_chat_app/data/data_source/claude_ai_data_source.dart';
 import 'package:oboa_chat_app/data/data_source/google_stt_data_source.dart';
 import 'package:oboa_chat_app/data/data_source/remote/supabase_file_data_source_impl.dart';
 import 'package:oboa_chat_app/data/data_source/supabase_chat_data_source.dart';
+import 'package:oboa_chat_app/data/data_source/supabase_chat_share_data_source.dart';
 import 'package:oboa_chat_app/data/repository/chat_repository_impl.dart';
+import 'package:oboa_chat_app/data/repository/chat_share_repository_impl.dart';
 import 'package:oboa_chat_app/data/repository/file_repository_impl.dart';
 import 'package:oboa_chat_app/data/repository/user_repository_impl.dart';
 import 'package:oboa_chat_app/data/service/ai_chat_service_impl.dart';
 import 'package:oboa_chat_app/data/service/clipboard_service_impl.dart';
 import 'package:oboa_chat_app/data/service/file_selection_service_impl.dart';
 import 'package:oboa_chat_app/data/service/share_native_service_impl.dart';
-import 'package:oboa_chat_app/data/service/share_url_service_impl.dart';
+import 'package:oboa_chat_app/data/service/share_service_impl.dart';
 import 'package:oboa_chat_app/data/service/speech_to_text_service_impl.dart';
 import 'package:oboa_chat_app/domain/clipboard/clipboard_service.dart';
 import 'package:oboa_chat_app/data/data_source/local_storage.dart';
 import 'package:oboa_chat_app/domain/repository/chat_repository.dart';
+import 'package:oboa_chat_app/domain/repository/chat_share_repository.dart';
 import 'package:oboa_chat_app/domain/repository/file_repository.dart';
 import 'package:oboa_chat_app/domain/repository/user_repository.dart';
 import 'package:oboa_chat_app/domain/service/ai_service.dart';
 import 'package:oboa_chat_app/domain/service/file_selection_service.dart';
 import 'package:oboa_chat_app/domain/service/share_native_service.dart';
-import 'package:oboa_chat_app/domain/service/share_url_service.dart';
+import 'package:oboa_chat_app/domain/service/share_service.dart';
 import 'package:oboa_chat_app/domain/service/speech_to_text_service.dart';
 import 'package:oboa_chat_app/domain/use_case/create_or_get_ai_chat_room_use_case.dart';
 import 'package:oboa_chat_app/domain/use_case/get_chat_room_message_use_case.dart';
@@ -52,7 +55,7 @@ void diSetup({bool isTesting = false}) {
     getIt.registerLazySingleton<ClipboardService>(() => ClipboardServiceImpl());
   }
 
-  getIt.registerLazySingleton<ShareUrlService>(() => ShareUrlServiceImpl());
+  getIt.registerLazySingleton<ShareService>(() => ShareServiceImpl());
   // --- Chat Feature Registration ---
 
   // Data Sources
@@ -65,10 +68,16 @@ void diSetup({bool isTesting = false}) {
   getIt.registerLazySingleton<GoogleSTTDataSource>(
         () => GoogleSTTDataSource(),
   );
+  getIt.registerLazySingleton<SupabaseShareDataSource>(
+        () => SupabaseShareDataSource(getIt<SupabaseClient>()),
+  );
 
   // Repositories
   getIt.registerLazySingleton<ChatRepository>(
         () => ChatRepositoryImpl(dataSource: getIt<SupabaseChatDataSource>()),
+  );
+  getIt.registerLazySingleton<ChatShareRepository>(
+        () => ChatShareRepositoryImpl(dataSource: getIt<SupabaseShareDataSource>()),
   );
 
   // User Repository 등록
@@ -143,11 +152,11 @@ void diSetup({bool isTesting = false}) {
       speechToTextService: getIt<SpeechToTextService>(),
       userRepository: getIt<UserRepository>(),
       clipboardService: getIt<ClipboardService>(),
-      shareNativeService: getIt<ShareNativeService>(),
       chatRepository: getIt<ChatRepository>(),
+          chatShareRepository: getIt<ChatShareRepository>(),
           aiChatService: getIt<AIChatService>(),
           sendChatWithAttachmentsUseCase: getIt<SendChatWithAttachmentsUseCase>(),
-          uploadCapturedImageUseCase: getIt<UploadCapturedImageUseCase>(), shareUrlService: getIt<ShareUrlService>(),
+          uploadCapturedImageUseCase: getIt<UploadCapturedImageUseCase>(), shareService: getIt<ShareService>(),
     ),
   );
 
