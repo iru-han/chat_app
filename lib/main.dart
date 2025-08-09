@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:oboa_chat_app/core/routing/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -49,6 +50,10 @@ Future<void> main() async {
     print('익명 사용자 로그인 중 에러 발생: $e');
     // 네트워크 문제 등 익명 로그인 실패 시 에러 처리
   }
+
+  KakaoSdk.init(
+    nativeAppKey: dotenv.env['KAKAO_NATIVE_APP_KEY']!,
+  );
 
   diSetup(isTesting: false);
   runApp(const MyApp());
